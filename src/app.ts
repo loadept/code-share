@@ -3,7 +3,6 @@ import express, { static as staticFiles } from 'express'
 import { createServer } from 'node:http'
 import { join } from 'node:path'
 import { Server } from 'socket.io'
-import cors from 'cors'
 import loadRoutes from './config/routerLoader'
 
 const app = express()
@@ -13,7 +12,6 @@ const io = new Server(server)
 app.disable('x-powered-by')
 app.use(express.json())
 app.use(staticFiles(join(__dirname, 'public')))
-app.use(cors())
 loadRoutes(app)
 
 io.on('connection', (socket) => {
