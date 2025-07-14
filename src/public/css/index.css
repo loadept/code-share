@@ -1,3 +1,5 @@
+@import "tailwindcss";
+
 /* Importing fonts */
 @font-face {
   font-family: 'firacode';
@@ -15,38 +17,6 @@
 ::after,
 ::before {
   box-sizing: border-box;
-  font-family: 'firacode', sans-serif;
-  font-variant-ligatures: normal;
-  margin: 0;
-  padding: 0;
-}
-
-html {
-  overflow: hidden;
-}
-
-html,
-body,
-main {
-  width: 100%;
-  height: 100%;
-}
-
-#header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 4px 6px;
-  background-color: #151517;
-}
-
-#editor {
-  width: 100%;
-  height: 100%;
-  outline: none;
-  border: none;
-  resize: none;
-  background-color: #1E1E1E;
   font-family: 'firacode', sans-serif;
   font-variant-ligatures: normal;
 }

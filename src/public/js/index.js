@@ -19,6 +19,7 @@ require(['vs/editor/editor.main'], () => {
     minimap: {
       enabled: false
     },
+    padding: { top: 20, bottom: 20 },
     automaticLayout: true
   });
 
