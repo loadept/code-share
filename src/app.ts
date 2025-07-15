@@ -1,31 +1,42 @@
 import { PORT } from './config/environments'
-import express, { static as staticFiles } from 'express'
-import { createServer } from 'node:http'
 import { join } from 'node:path'
-import { Server } from 'socket.io'
+import express, { Express, static as staticFiles } from 'express'
+import { createServer, Server } from 'node:http'
+import CreateSocket from './sockets'
 import loadRoutes from './config/routerLoader'
 
-const app = express()
-const server = createServer(app)
-const io = new Server(server)
+class App {
+  private app: Express
+  private server: Server
 
-app.disable('x-powered-by')
-app.use(express.json())
-app.use(staticFiles(join(__dirname, 'public')))
-loadRoutes(app)
+  private socket: CreateSocket
 
-io.on('connection', (socket) => {
-  socket.on('code update', ({ code, userId }) => {
-    socket.broadcast.emit('code update', {
-      code,
-      userId
+  constructor() {
+    this.app = express()
+    this.server = createServer(this.app)
+    this.socket = new CreateSocket(this.server)
+
+    this.setupMiddleware()
+    this.setupRoutes()
+  }
+
+  private setupMiddleware() {
+    this.app.disable('x-powered-by')
+    this.app.use(express.json())
+    this.app.use(staticFiles(join(__dirname, 'ui', 'public')))
+  }
+
+  private setupRoutes() {
+    loadRoutes(this.app)
+  }
+
+  public run() {
+    this.server.listen(PORT, () => {
+      this.socket.initSocket()
+      console.log(`server listen on ${PORT}`)
     })
-  })
+  }
+}
 
-  socket.on('disconnect', () => {
-  })
-})
-
-server.listen(PORT, () => {
-  console.log(`server listen on ${PORT}`)
-})
+const app = new App()
+app.run()
