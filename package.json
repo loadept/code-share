@@ -7,8 +7,8 @@
     "start": "node dist/app.js",
     "build": "tsc",
     "dev": "nodemon src/app.ts",
-    "tailwind": "npx @tailwindcss/cli -i src/public/css/index.css -o src/public/css/tw.css --watch",
-    "tailwind:build": "npx @tailwindcss/cli -i src/public/css/index.css -o src/public/css/tw.css --minify",
+    "tailwind": "npx @tailwindcss/cli -i src/ui/public/css/index.css -o src/ui/public/css/tw.css --watch",
+    "tailwind:build": "npx @tailwindcss/cli -i src/ui/public/css/index.css -o src/ui/public/css/tw.css --minify",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
