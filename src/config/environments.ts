@@ -1,14 +1,13 @@
-let isEnvsLoaded = false
+let isLoaded = false
 
-const LoadEnviron = () => {
-  if (!isEnvsLoaded) {
-    console.log('Loading environment variables')
+const loadEnv = () => {
+  if (!isLoaded) {
+    console.log('Cargando variables de entorno...')
     process.loadEnvFile()
-    isEnvsLoaded = true
+    isLoaded = true
   }
-
 }
-LoadEnviron()
+loadEnv()
 
 export const {
   DEBUG,

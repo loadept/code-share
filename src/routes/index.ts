@@ -1,11 +1,8 @@
 import { Router } from 'express'
-import { join } from 'node:path'
+import IndexController from '../controllers'
 
 const router = Router()
 
-router.get('/', (_req, res) => {
-  const filePath = join(process.cwd(), 'src', 'ui', 'views', 'index.html')
-  res.sendFile(filePath)
-})
+router.get('/', IndexController.indexPage)
 
 export default router
