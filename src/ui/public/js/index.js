@@ -6,6 +6,8 @@ require.config({
 const socket = io();
 
 const $ = selector => document.querySelector(selector)
+const $all = selector => document.querySelectorAll(selector)
+
 const audio = new Audio('/sounds/notification.mp3')
 const prevTitle = document.title
 let changeTitleTimer = null
@@ -64,21 +66,20 @@ require(['vs/editor/editor.main'], () => {
 })
 
 socket.on('totalConnections', (total) => {
-  const usersCounter = $('#users-counter')
-  usersCounter.textContent = total
+  const usersCounter = $all('.users-counter')
+  usersCounter.forEach(e => {
+    e.textContent = total
+  })
 })
 
-const downloadButton = $('#download-button')
-downloadButton.addEventListener('click', () => {
-  const blob = new Blob([editor.getValue])
+const usersButton = $('#users-button')
+usersButton.addEventListener('click', (e) => {
+  e.stopPropagation()
+  const usersPopUp = $('#users-popup')
+  usersPopUp.classList.toggle('hidden')
+})
 
-  const link = document.createElement('a')
-  link.href = URL.createObjectURL(blob)
-  link.download = 'code-share.txt'
-  link.style.display = 'none'
-
-  document.body.appendChild(link)
-  link.click()
-  document.body.removeChild(link);
-  URL.revokeObjectURL(link.href);
+document.addEventListener('click', () => {
+  const usersPopUp = $('#users-popup')
+  usersPopUp.classList.toggle('hidden')
 })

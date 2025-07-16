@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/css/index.css" />
+  <link rel="stylesheet" href="/css/tw.css" />
+  <link rel="icon" href="/favicon.svg" />
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
+  <title>CodeShare</title>
+</head>
+
+<body class="min-h-screen flex items-center justify-center bg-[#1e1e1e]">
+  <main class="w-full max-w-md">
+    <div class="text-center mb-8">
+      <div class="flex items-center justify-center gap-3 mb-4">
+        <div class="flex items-center justify-center w-32 h-32 rounded-xl">
+          <img src="/images/code-share-n.webp" alt="CodeShare logo" class="w-32" />
+        </div>
+        <h1 class="text-3xl font-bold">
+          CodeShare
+        </h1>
+      </div>
+      <p class="text-sm">
+        Ingresa tu nombre para comenzar
+      </p>
+    </div>
+
+    <div class="rounded-lg p-6 bg-[#252526] border border-[#3e3e42]">
+      <form class="space-y-6">
+        <div>
+          <label for="username" class="block text-sm font-medium mb-2">
+            Nombre de usuario
+          </label>
+          <div class="relative">
+            <span class="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4"></span>
+            <input id="username" type="text" placeholder="Ingresa tu nombre"
+              class="w-full pl-10 pr-4 py-3 border border-[#3e3e42] outline-none rounded-lg transition-colors focus:outline-none focus:border-none focus:ring-2" />
+          </div>
+        </div>
+
+        <button type="submit"
+          class="w-full py-3 bg-orange-500 text-sm font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+          <div class="flex items-center justify-center gap-2 hidden">
+            <div class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+            Accediendo...
+          </div>
+          Ingresar
+        </button>
+      </form>
+    </div>
+  </main>
+</body>
+
+</html>
