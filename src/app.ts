@@ -3,7 +3,7 @@ import { join } from 'node:path'
 import express, { Express, json, static as staticFiles } from 'express'
 import { createServer, Server } from 'node:http'
 import CreateSocket from './sockets'
-import loadRoutes from './config/routerLoader'
+import loadRoutes from './routes/loader'
 
 class App {
   private app: Express
