@@ -1,12 +1,27 @@
+const $ = selector => document.querySelector(selector)
+const $all = selector => document.querySelectorAll(selector)
+
+const userData = localStorage.getItem('userData')
+const userDecodedData = JSON.parse(userData || 'null')
+
+const body = $('body')
+body.classList.add('hidden')
+
+try {
+  if (!userDecodedData?.username) throw new Error('Datos inválidos');
+
+  $('#username').textContent = userDecodedData.username
+  body.classList.remove('hidden')
+} catch (err) {
+  window.location.href = '/auth'
+}
+
 require.config({
   paths: {
     vs: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.36.1/min/vs'
   }
 })
 const socket = io();
-
-const $ = selector => document.querySelector(selector)
-const $all = selector => document.querySelectorAll(selector)
 
 const audio = new Audio('/sounds/notification.mp3')
 const prevTitle = document.title
@@ -46,14 +61,14 @@ require(['vs/editor/editor.main'], () => {
       debounceTimer = setTimeout(() => {
         socket.emit('codeUpdate', {
           code: editor.getValue(),
-          userId: socket.id
+          userId: userDecodedData.userId
         })
       }, 200)
     }
   })
 
   socket.on('codeUpdate', ({ code, userId }) => {
-    if (userId !== socket.id) {
+    if (userId !== userDecodedData.userId) {
       isRemoteChange = true
       if (editor.getValue() !== code) {
         editor.setValue(code)
@@ -81,5 +96,5 @@ usersButton.addEventListener('click', (e) => {
 
 document.addEventListener('click', () => {
   const usersPopUp = $('#users-popup')
-  usersPopUp.classList.toggle('hidden')
+  usersPopUp.classList.add('hidden')
 })
