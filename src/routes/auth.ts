@@ -5,6 +5,6 @@ const router = Router()
 
 router.route('/')
   .get(AuthController.get)
-  .post(AuthController.login)
+  .post(AuthController.auth)
 
 export default router

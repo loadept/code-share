@@ -1,5 +1,7 @@
 import { Request, Response } from 'express'
 import { join } from 'node:path'
+import { userValidation } from '../models/user'
+import { v4 } from 'uuid'
 
 export default class AuthController {
   static get(_: Request, res: Response) {
@@ -8,16 +10,18 @@ export default class AuthController {
     res.sendFile(filePath)
   }
 
-  static login(req: Request, res: Response) {
-    if (!req.body) {
-      return res.status(401).json({ detail: 'Username is expected' })
-    }
-    const { username } = req.body!
-    if (username === undefined) {
-      return res.status(401).json({ detail: 'Username is expected' })
+  static auth(req: Request, res: Response) {
+    const result = userValidation(req.body || {})
+    if (result.error) {
+      return res.status(400).json({ detail: JSON.parse(result.error.message) })
     }
 
-    return res.redirect('/')
-    // return res.json({ message: `Welcome ${username}` })
+    const uuid = v4()
+    const response = {
+      userId: uuid,
+      username: result.data.username
+    }
+
+    return res.json({ status: 'ok', data: response })
   }
 }
