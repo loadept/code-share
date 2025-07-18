@@ -1,5 +1,6 @@
-import { Users } from "../../icons/users"
 import { useState } from 'preact/hooks'
+import logo from '../../../assets/images/code-share-n.webp'
+import { HeaderButton } from './header-button'
 
 export const Header = () => {
   const [showUsersList, setShowUsersList] = useState(false)
@@ -7,6 +8,7 @@ export const Header = () => {
   const toggleUsersList = () => {
     setShowUsersList(!showUsersList)
   }
+
   const connectedUsers = [
     { id: 1, name: "Juan Desarrollador", avatar: "J" },
     { id: 2, name: "María García", avatar: "MG" },
@@ -20,7 +22,7 @@ export const Header = () => {
     <header className="flex items-center justify-between px-8 py-4 bg-[#151517]">
       <div className="flex items-center gap-2">
         <div className="flex items-center justify-center">
-          <img src="/images/code-share-n.webp" alt="CodeShare logo" className="w-12" />
+          <img src={logo} alt="CodeShare logo" className="w-12" />
         </div>
         <span className="text-lg font-bold text-gray-100">CodeShare</span>
       </div>
@@ -31,13 +33,7 @@ export const Header = () => {
       </div>
 
       <div className="relative">
-        <button
-          onClick={toggleUsersList}
-          className="flex items-center gap-2 px-3 py-2 bg-[#3c3c3c] rounded-lg cursor-pointer outline-none">
-          <Users />
-          <span className="users-counter text-sm font-medium text-gray-200">0</span>
-          <span className="text-xs text-gray-300">conectados</span>
-        </button>
+        <HeaderButton onClick={toggleUsersList} />
 
         {showUsersList && (
           <div

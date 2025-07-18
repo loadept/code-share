@@ -3,7 +3,7 @@
 /* Importing fonts */
 @font-face {
   font-family: 'firacode';
-  src: url('/fonts/firacode.woff2') format('woff2');
+  src: url('./assets/fonts/firacode.woff2') format('woff2');
   font-weight: 300;
   font-style: normal;
   font-display: swap;
