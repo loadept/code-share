@@ -1,0 +1,16 @@
+@import "tailwindcss";
+
+/* Importing fonts */
+@font-face {
+  font-family: 'firacode';
+  src: url('/fonts/firacode.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  font-family: 'firacode', sans-serif;
+  font-variant-ligatures: normal;
+  color-scheme: dark;
+}
