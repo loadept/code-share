@@ -1,15 +1,8 @@
 import { Request, Response } from 'express'
-import { join } from 'node:path'
 import { userValidation } from '../models/user'
 import { v4 } from 'uuid'
 
 export default class AuthController {
-  static get(_: Request, res: Response) {
-    const filePath = join(process.cwd(), "src", "ui", "views", "auth.html")
-
-    res.sendFile(filePath)
-  }
-
   static auth(req: Request, res: Response) {
     const result = userValidation(req.body || {})
     if (result.error) {
