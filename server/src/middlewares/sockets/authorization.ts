@@ -25,7 +25,8 @@ export const authorization = (socket: Socket, next: (err?: ExtendedError) => voi
   }
 
   const userData: UserConnected = {
-    ...payload,
+    userId: payload.userId,
+    username: payload.username,
     socketId: socket.id
   }
   socket.data.userData = userData

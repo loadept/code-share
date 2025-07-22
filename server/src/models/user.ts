@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
 export interface User {
-  uuid: string
+  userId: string
   username: string
 }
 
