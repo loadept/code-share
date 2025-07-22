@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import { userValidation } from '../models/user'
-import { v4 } from 'uuid'
+import { generateUUID } from '../utils/uuid'
+import { authJwt } from '../config/authJwt'
 
 export default class AuthController {
   static auth(req: Request, res: Response) {
@@ -9,12 +10,20 @@ export default class AuthController {
       return res.status(400).json({ detail: JSON.parse(result.error.message) })
     }
 
-    const uuid = v4()
-    const response = {
+    const uuid = generateUUID()
+    const authPayload = {
       userId: uuid,
       username: result.data.username
     }
+    const jwt = authJwt.signToken(authPayload)
 
-    return res.json({ status: 'ok', data: response })
+    return res.json({
+      status: 'ok',
+      message: 'Complete authentication',
+      data: {
+        username: result.data.username
+      },
+      accessToken: jwt
+    })
   }
 }

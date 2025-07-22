@@ -1,8 +1,9 @@
 import { PORT } from './config/environments'
 import express, { Express, json } from 'express'
 import { createServer, Server } from 'node:http'
-import CreateSocket from './sockets'
+import CreateSocket from './sockets/init'
 import loadRoutes from './routes/loader'
+import cors from 'cors'
 
 class App {
   private app: Express
@@ -22,6 +23,7 @@ class App {
   private setupMiddleware() {
     this.app.disable('x-powered-by')
     this.app.use(json())
+    this.app.use(cors())
   }
 
   private setupRoutes() {
@@ -30,6 +32,7 @@ class App {
 
   public run() {
     this.server.listen(PORT, () => {
+      this.socket.useMiddlewares()
       this.socket.initSocket()
       console.log(`server listen on ${PORT}`)
     })

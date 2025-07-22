@@ -12,4 +12,5 @@ loadEnv()
 export const {
   DEBUG,
   PORT,
+  SECRET_KEY,
 } = process.env
