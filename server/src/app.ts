@@ -1,3 +1,4 @@
+import './utils/logger'
 import { PORT } from './config/environments'
 import express, { Express, json } from 'express'
 import { createServer, Server } from 'node:http'

@@ -11,7 +11,12 @@ export default class CreateSocket {
   private socketCodeHandlers: SocketCodeHandlers
 
   constructor(httpServer: http.Server) {
-    this._io = new Server(httpServer)
+    this._io = new Server(httpServer, {
+      connectionStateRecovery: {},
+      cors: {
+        origin: '*'
+      }
+    })
     this.socketRoomHandlers = new SocketRoomHandlers()
     this.socketCodeHandlers = new SocketCodeHandlers()
   }
@@ -28,7 +33,7 @@ export default class CreateSocket {
       socket.on('leaveRoom', () => this.socketRoomHandlers.handleLeaveRoom(this._io, socket))
 
       // Code socket
-      socket.on('codeUpdate', ({ code }) => this.socketCodeHandlers.handleCodeUpdate(this._io, socket, code))
+      socket.on('codeUpdates', ({ code }) => this.socketCodeHandlers.handleCodeUpdate(this._io, socket, code))
 
       socket.on('disconnect', () => this.socketRoomHandlers.handleDisconnect(this._io, socket))
     })

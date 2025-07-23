@@ -21,6 +21,7 @@ export default class AuthController {
       status: 'ok',
       message: 'Complete authentication',
       data: {
+        userId: uuid,
         username: result.data.username
       },
       accessToken: jwt

@@ -13,6 +13,7 @@ export class SocketRoomHandlers {
     const userData = socket.data.userData as UserConnected
 
     socket.join(roomId)
+    console.log(`New socket connected ${socket.id} to room ${roomId}`)
 
     const roomUsers = this.connectedUsers.get(roomId) || []
     if (!roomUsers.some(u => u.userId === userData.userId)) {
@@ -59,13 +60,15 @@ export class SocketRoomHandlers {
   emitRoomUpdate(io: Server, socket: Socket) {
     const roomId = socket.data.roomId as string
 
-    const userCount = io.sockets.adapter.rooms.get(roomId)?.size || 0
+    const socketsCount = io.sockets.adapter.rooms.get(roomId)?.size || 0
     const users = this.connectedUsers.get(roomId) || []
+    const userCount = users.length
 
     io.to(roomId).emit('roomUpdates', {
       roomId,
+      users,
       count: userCount,
-      users
+      sockets: socketsCount
     })
   }
 }
