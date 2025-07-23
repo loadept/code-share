@@ -21,7 +21,6 @@ export const MainEditor = () => {
     if (!socket) return
 
     const handleCodeUpdate = ({ code: remoteCode }) => {
-      console.log('bro?')
       isRemoteChange.current = true
 
       setCode(remoteCode)
