@@ -81,11 +81,13 @@ const useSocketStore = create((set, get) => ({
     })
   },
 
-  emit: (event, callback) => {
-    const { socket } = get()
+  emit: (event, data) => {
+    const { socket, isConnected } = get()
 
-    if (socket) {
-      socket.on(event, callback)
+    if (socket && isConnected) {
+      socket.emit(event, data)
+    } else {
+      console.warn('e')
     }
   },
 

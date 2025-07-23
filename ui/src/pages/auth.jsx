@@ -33,6 +33,7 @@ const Auth = () => {
       })
 
       const authData = {
+        userId: data.data.userId,
         username: data.data.username,
         accessToken: data.accessToken
       }
