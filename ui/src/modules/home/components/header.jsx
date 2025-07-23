@@ -4,15 +4,12 @@ import { HeaderButton } from './header-button'
 import { PopupUser } from './popup-user'
 import { ConnectModal } from './connect-modal'
 import { Leave } from '../../icons'
-import useConnectionStore from '../../../core/store/connection-store'
-import { io, Socket } from 'socket.io-client'
-import { useEffect, useRef, useState } from 'react'
+import useConnectionStore from '../../../core/store/session-store'
+import useSocketStore from '../../../core/store/socket-store'
 
 export const Header = () => {
   const { authData } = useAuthStore()
-  const [countConnections, setCountConnections] = useState(0)
-  const [connectedUsers, setConnectedUsers] = useState([])
-  // const socket = useRef(null)
+  // Connect room UI level
   const {
     isLoading,
     isConnected,
@@ -22,46 +19,37 @@ export const Header = () => {
     showConnectionModal,
     initiateConnection,
     confirmConnection,
-    disconnect,
+    disconnect: disconnectRoom,
     toggleUsersList,
-    checkConnection
   } = useConnectionStore()
+  // WS event room store
+  const {
+    connect: connectSocket,
+    disconnect: disconnectSocket,
+    connectedUsers,
+    countConnections,
+    isConnecting
+  } = useSocketStore()
 
-  useEffect(() => {
-    if (checkConnection()) {
-      const socket = io(API_URL, {
-        query: {
-          roomId,
-        },
-        auth: {
-          token: authData.accessToken
-        }
-      })
-      socket.emit('joinRoom')
-
-      socket.on('roomUpdates', ({ roomId, count, users }) => {
-        setCountConnections(count)
-        setConnectedUsers(users)
-      })  
-    }
-  }, [])
   const handleConnection = () => {
     confirmConnection()
 
-    const socket = io(API_URL, {
-      query: {
-        roomId,
-      },
-      auth: {
-        token: authData.accessToken
-      }
-    })
-    socket.emit('joinRoom')
+    if (roomId && authData?.accessToken) {
+      connectSocket(roomId, authData.accessToken)
+    }
+  }
 
-    socket.on('roomUpdates', ({ roomId, count, users }) => {
-      setCountConnections(count)
-      setConnectedUsers(users)
-    })
+  const handleDisconnect = () => {
+    disconnectSocket()
+    disconnectRoom()
+  }
+
+  const handleButtonClick = () => {
+    if (isConnected) {
+      toggleUsersList()
+    } else {
+      initiateConnection()
+    }
   }
 
   return (
@@ -74,12 +62,14 @@ export const Header = () => {
       </div>
       <div className="flex items-center gap-3">
         <div className="h-8"></div>
-        <span className="text-sm font-semibold text-gray-100">{authData?.username.toUpperCase()}</span>
+        <span className="text-sm font-semibold text-gray-100">
+          {authData?.username.toUpperCase()}
+        </span>
       </div>
       <div className="relative">
         <HeaderButton
-          isLoading={isLoading}
-          onClick={() => isConnected ? toggleUsersList() : initiateConnection()}
+          isLoading={isLoading || isConnecting}
+          onClick={handleButtonClick}
           isConnected={isConnected}
           connectedNumber={countConnections}
         />
@@ -94,7 +84,7 @@ export const Header = () => {
                   Usuarios conectados {countConnections}
                 </h3>
                 <button
-                  onClick={disconnect}
+                  onClick={handleDisconnect}
                   className="flex items-center gap-1 px-2 py-1 rounded-lg text-sm font-semibold text-white bg-[#d73a49]"
                 >
                   <Leave className="h-4 w-4" />
@@ -104,7 +94,7 @@ export const Header = () => {
 
               <div className="space-y-2 max-h-64 overflow-y-auto">
                 {connectedUsers.map(user => (
-                  <PopupUser user={user} />
+                  <PopupUser key={user.userId} user={user} />
                 ))}
               </div>
             </div>

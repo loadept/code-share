@@ -10,7 +10,6 @@ export default defineConfig({
   ],
   define: {
     API_URL: JSON.stringify(process.env.API_URL),
-    SOCKET_SERVER_URL: JSON.stringify(process.env.SOCKET_SERVER_URL)
   },
   resolve: {
     alias: {

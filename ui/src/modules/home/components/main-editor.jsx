@@ -1,6 +1,6 @@
 import { Editor } from '@monaco-editor/react'
 import { useCallback, useEffect, useRef, useState } from 'preact/hooks'
-import useConnectionStore from '../../../core/store/connection-store'
+import useConnectionStore from '../../../core/store/session-store'
 
 export const MainEditor = () => {
   const [code, setCode] = useState('')

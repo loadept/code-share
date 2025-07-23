@@ -3,21 +3,43 @@ import { MainEditor } from '../modules/home/components/main-editor'
 import { useEffect } from 'preact/hooks'
 import { route } from 'preact-router'
 import useAuthStore from '../core/store/auth-store'
-import useConnectionStore from '../core/store/connection-store'
+import useConnectionStore from '../core/store/session-store'
+import useSocketStore from '../core/store/socket-store'
 
 const Home = () => {
-  const { isAuthenticated, isLoading } = useAuthStore()
-  const { checkConnection } = useConnectionStore()
+  const { isAuthenticated, isLoading, authData } = useAuthStore()
+  const { checkConnection, isConnected, roomId } = useConnectionStore()
+  const {
+    connect: connectSocket,
+    disconnect: disconnectSocket,
+  } = useSocketStore()
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
       route('/auth', true)
     }
   }, [isAuthenticated, isLoading])
-  
+
   useEffect(() => {
     checkConnection()
   }, [])
+
+  useEffect(() => {
+    if (isConnected && authData?.accessToken && roomId) {
+      connectSocket(roomId, authData.accessToken)
+    }
+
+    return () => {
+      disconnectSocket()
+    }
+  }, [roomId, authData?.accessToken])
+
+  useEffect(() => {
+    if (!isConnected) {
+      disconnectSocket()
+    }
+  }, [isConnected])
+
 
   if (isLoading) {
     return (

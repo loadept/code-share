@@ -4,7 +4,7 @@ import { Home, Auth } from './pages'
 import Router from 'preact-router'
 import useAuthStore from './core/store/auth-store'
 import { useEffect } from 'preact/hooks'
-import useConnectionStore from './core/store/connection-store'
+import useConnectionStore from './core/store/session-store'
 
 const App = () => {
   const { initAuth, isLoading } = useAuthStore()

@@ -3,137 +3,116 @@ import { create } from 'zustand'
 
 const useSocketStore = create((set, get) => ({
   socket: null,
-  isSocketConnected: false,
-  connectionUsers: [],
-  connectionError: null,
+  isConnected: false,
+  connectedUsers: [],
+  countConnections: 0,
+  isConnecting: false,
 
-  SOCKET_SERVER_URL: SOCKET_SERVER_URL,
+  SOCKET_SERVER_URL: API_URL,
 
-  connect: () => {
-    const { socket, disconnect } = get()
+  connect: (roomId, authToken) => {
+    const { socket: currentSocket, disconnect } = get()
 
-    if (socket) {
+    if (currentSocket) {
       disconnect()
     }
+
+    set({ isConnecting: true })
 
     try {
       const { SOCKET_SERVER_URL } = get()
 
-      const newSocket = io(SOCKET_SERVER_URL, {
-        transports: ['websocket'],
-        query: {
-          roomId,
-        },
-        auth: {
-          token: 'pepepepe'
-        }
+      const socket = io(SOCKET_SERVER_URL, {
+        query: { roomId },
+        auth: { token: authToken },
+        reconnectionDelay: 1000,
       })
 
-      newSocket.emit('joinRoom')
+      socket.on('connect', () => {
+        console.log(`socket connected ${socket.id}`);
 
-      newSocket.on('connectError', (error) => {
-        console.error('Connection error Socket.IO:', error)
-        get().handleError('Server connection error')
+        set({ isConnected: true, isConnecting: false })
+        socket.emit('joinRoom')
       })
 
-      newSocket.on('disconnect', (reason) => {
+      socket.on('disconnect', (reason) => {
         console.log(`Socket disconnected ${reason}`)
-        set({ isSocketConnected: false })
-
-        if (reason !== 'io client disconnect') {
-          get().handleError('Connection lost')
-        }
+        set({
+          isConnected: false,
+          isConnecting: false,
+          connectedUsers: [],
+          countConnections: 0
+        })
       })
 
+      socket.on('roomUpdates', ({ _roomId, count, users }) => {
+        set({
+          countConnections: count,
+          connectedUsers: users
+        })
+      })
 
-      get().setupRoomEvents(newSocket)
+      set({ socket, isConnecting: false })
 
-      get().setupEditorEvents(newSocket)
+      return socket
     } catch (err) {
       console.error(`Error creating socket ${err}`)
-      get().handleError('Error establishing connection')
+      set({ isConnecting: false, isConnected: false })
+      return null
     }
   },
-
-  setupRoomEvents: (socket) => {
-    socket.on('userJoined', (userData) => {
-      console.log(`A user join ${userData}`)
-      const { connectedUsers } = get()
-      const exists = connectedUsers.find(user => user.id === userData.id)
-
-      if (!exists) {
-        set({
-          connectedUsers: [...connectedUsers, userData]
-        })
-      }
-    })
-
-    socket.on('userLeft', (userData) => {
-      console.log(`A user left ${userData}`)
-      const { connectedUsers } = get()
-      set({
-        connectedUsers: connectedUsers.filter(user => user.id !== userData.id)
-      })
-    })
-
-    socket.on('usersInRoom', (users) => {
-      console.log(`Users in room ${users}`)
-      set({ connectedUsers: users || [] })
-    })
-
-    socket.on('roomError', (error) => {
-      console.error(`Error in room ${error}`)
-      get().handleError(error)
-    })
-  },
-
-  setupEditorEvents: (socket) => {
-    socket.on('codeChange', (data) => {
-      window.dispatchEvent(new CustomEvent('socketCodeChange', { 
-        detail: data 
-      }))
-    })
-
-    socket.on('cursorPosition', (data) => {
-      window.dispatchEvent(new CustomEvent('socketCursorPosition', { 
-        detail: data 
-      }))
-    })
-
-    socket.on('selectionChange', (data) => {
-      window.dispatchEvent(new CustomEvent('socketSelectionChange', { 
-        detail: data 
-      }))
-    })
-  },
-
 
   disconnect: () => {
     const { socket } = get()
     
     if (socket) {
+      socket.emit('leaveRoom')
+      socket.removeAllListeners()
       socket.disconnect()
+      console.log('Socket disconnected manually')
     }
 
     set({
       socket: null,
-      isSocketConnected: false,
+      isConnected: false,
       connectedUsers: [],
-      connectionError: null
+      countConnections: 0,
+      isConnecting: false
     })
   },
 
-  leaveRoom: (roomId) => {
+  emit: (event, callback) => {
     const { socket } = get()
-    
-    if (socket && socket.connected) {
-      socket.emit('leaveRoom', { roomId }, (response) => {
-        if (response?.success) {
-          console.log(`Left room ${roomId}`)
-        }
-      })
+
+    if (socket) {
+      socket.on(event, callback)
     }
   },
+
+  on: (event, callback) => {
+    const { socket } = get()
+
+    if (socket) {
+      socket.on(event, callback)
+    }
+  },
+
+  off: (event, callback) => {
+    const { socket } = get()
+
+    if (socket) {
+      if (callback) {
+        socket.off(event, callback)
+      } else {
+        socket.removeAllListeners(event)
+      }
+    }
+  },
+
+  reset: () => {
+    const { disconnect } = get()
+    disconnect()
+  }
 }))
 
 export default useSocketStore

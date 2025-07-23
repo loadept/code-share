@@ -28,6 +28,7 @@ const useConnectionStore = create((set, get) => ({
     const { generateRoomId } = get()
     const roomId = generateRoomId()
     const url = new URL(window.location.href)
+    url.searchParams.delete('room')
     url.searchParams.set('room', roomId)
 
     set({
