@@ -14,3 +14,17 @@
   font-variant-ligatures: normal;
   color-scheme: dark;
 }
+
+@theme {
+  --animate-showing: showing 0.2s ease-in;
+
+  @keyframes showing {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
+  }
+}

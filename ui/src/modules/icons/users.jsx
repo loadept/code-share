@@ -1,7 +1,7 @@
-export const Users = () => {
+const Users = ({ className }) => {
   return (
-    <svg viewBox="0 0 24 24" className="h-4 w-4">
-      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+    <svg viewBox="0 0 24 24" className={className}>
+      <g id="SVGRepo_bgCarrier" stroke-width="1"></g>
       <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
       <g id="SVGRepo_iconCarrier">
         <g clip-path="url(#clip0_1251_98416)">
@@ -27,3 +27,5 @@ export const Users = () => {
     </svg>
   )
 }
+
+export default Users

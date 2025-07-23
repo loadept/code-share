@@ -8,6 +8,10 @@ export default defineConfig({
     preact(),
     tailwindcss()
   ],
+  define: {
+    API_URL: JSON.stringify(process.env.API_URL),
+    SOCKET_SERVER_URL: JSON.stringify(process.env.SOCKET_SERVER_URL)
+  },
   resolve: {
     alias: {
       'react': 'preact/compat',
