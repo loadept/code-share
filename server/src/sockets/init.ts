@@ -12,6 +12,7 @@ export default class CreateSocket {
 
   constructor(httpServer: http.Server) {
     this._io = new Server(httpServer, {
+      transports: ['websocket'],
       connectionStateRecovery: {},
       cors: {
         origin: '*'

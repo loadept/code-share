@@ -23,6 +23,7 @@ const useSocketStore = create((set, get) => ({
       const { SOCKET_SERVER_URL } = get()
 
       const socket = io(SOCKET_SERVER_URL, {
+        transports: ['websocket'],
         query: { roomId },
         auth: { token: authToken },
         reconnectionDelay: 1000,
