@@ -5,6 +5,7 @@ import { createServer, Server } from 'node:http'
 import CreateSocket from './sockets/init'
 import loadRoutes from './routes/loader'
 import cors from 'cors'
+import { join } from 'node:path'
 
 class App {
   private app: Express
@@ -18,7 +19,12 @@ class App {
     this.socket = new CreateSocket(this.server)
 
     this.setupMiddleware()
+    this.setupStatic()
     this.setupRoutes()
+  }
+
+  private setupStatic() {
+    this.app.use(express.static(join(__dirname, 'public')))
   }
 
   private setupMiddleware() {

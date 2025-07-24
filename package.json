@@ -1,0 +1,23 @@
+{
+  "name": "code-share",
+  "version": "1.0.0",
+  "description": "CodeShare, the collaborative code editor",
+  "private": true,
+  "workspaces": [
+    "server",
+    "ui"
+  ],
+  "scripts": {
+    "dev": "pnpm run --parallel dev",
+    "build": "pnpm run --recursive build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["express", "preact", "socket.io"],
+  "author": "loadept",
+  "license": "GPL-3.0-only",
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=10.0.0"
+  },
+  "packageManager": "pnpm@10.6.2"
+}

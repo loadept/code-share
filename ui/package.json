@@ -1,11 +1,11 @@
 {
-  "name": "ui",
-  "private": true,
-  "version": "0.0.0",
+  "name": "code-share-ui",
+  "description": "Client for CodeShare project",
   "type": "module",
+  "private": true,
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "API_URL=/api vite build",
     "preview": "vite preview"
   },
   "dependencies": {
