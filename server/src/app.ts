@@ -19,18 +19,15 @@ class App {
     this.socket = new CreateSocket(this.server)
 
     this.setupMiddleware()
-    this.setupStatic()
     this.setupRoutes()
-  }
-
-  private setupStatic() {
-    this.app.use(express.static(join(__dirname, 'public')))
   }
 
   private setupMiddleware() {
     this.app.disable('x-powered-by')
     this.app.use(json())
     this.app.use(cors())
+    // Static files middleware
+    this.app.use(express.static(join(__dirname, 'public')))
   }
 
   private setupRoutes() {

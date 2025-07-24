@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "vite",
-    "build": "API_URL=/api vite build",
+    "build": "API_URL=/ vite build",
     "preview": "vite preview"
   },
   "dependencies": {
