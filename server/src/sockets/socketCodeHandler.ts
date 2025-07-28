@@ -2,8 +2,6 @@
 import { Server, Socket } from 'socket.io'
 
 export class SocketCodeHandlers {
-  constructor() { }
-
   handleCodeUpdate(_io: Server, socket: Socket, code: string) {
     const roomId = socket.data.roomId as string
 

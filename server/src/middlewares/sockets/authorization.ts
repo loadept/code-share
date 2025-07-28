@@ -1,14 +1,14 @@
 import { ExtendedError, Socket } from 'socket.io'
 import { authJwt } from '../../config/authJwt'
-import { UserConnected } from '../../models/socket';
+import { UserConnected } from '../../models/socket'
 
 export const authorization = (socket: Socket, next: (err?: ExtendedError) => void) => {
-  const { token } = socket.handshake.auth;
+  const { token } = socket.handshake.auth
 
   if (typeof token !== 'string') {
     const err = new Error('Invalid token') as ExtendedError
     err.data = { detail: 'The proportioned token is not valid' }
-    return next(err) 
+    return next(err)
   }
 
   if (!token) {

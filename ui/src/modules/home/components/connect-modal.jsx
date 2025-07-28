@@ -1,12 +1,14 @@
-import { useState } from 'preact/hooks'
+import { useRef, useState } from 'preact/hooks'
 import { Check, Copy } from '../../icons'
 
 export const ConnectModal = ({ handleConnect, setShowConnectionModal, url }) => {
   const [isCopied, setIsCopied] = useState(false)
+  const roomUrlRef = useRef(null)
 
   const copyToClipboard = async () => {
     try {
       await navigator.clipboard.writeText(url)
+      roomUrlRef.current.select()
       setIsCopied(true)
     } catch (err) {
       console.error(`No se pudo copiar la URL ${err}`)
@@ -33,9 +35,11 @@ export const ConnectModal = ({ handleConnect, setShowConnectionModal, url }) => 
 
         <div className="flex gap-2 mb-6">
           <input
+            ref={roomUrlRef}
             type="text"
             value={url}
             readOnly
+            onClick={(e) => e.currentTarget.select()}
             className="flex-1 px-3 py-2 rounded-lg text-sm bg-[#3c3c3c] border border-[#57575b] text-[#cccccc] outline-none"
           />
           <button

@@ -4,7 +4,7 @@ import { generateUUID } from '../utils/uuid'
 import { authJwt } from '../config/authJwt'
 
 export default class AuthController {
-  static auth(req: Request, res: Response) {
+  auth(req: Request, res: Response) {
     const result = userValidation(req.body || {})
     if (result.error) {
       return res.status(400).json({ detail: JSON.parse(result.error.message) })

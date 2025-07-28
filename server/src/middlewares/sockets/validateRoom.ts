@@ -1,7 +1,7 @@
 import { ExtendedError, Socket } from 'socket.io'
 
 export const validateRoom = (socket: Socket, next: (err?: ExtendedError) => void) => {
-  const { roomId } = socket.handshake.query;
+  const { roomId } = socket.handshake.query
 
   if (typeof roomId !== 'string') {
     const err = new Error('Invalid room ID') as ExtendedError

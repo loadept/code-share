@@ -1,5 +1,5 @@
 import './utils/logger'
-import { PORT } from './config/environments'
+import getEnv from './config/environment'
 import express, { Express, json } from 'express'
 import { createServer, Server } from 'node:http'
 import CreateSocket from './sockets/init'
@@ -8,12 +8,14 @@ import cors from 'cors'
 import { join } from 'node:path'
 
 class App {
+  private PORT: string
   private app: Express
   private server: Server
 
   private socket: CreateSocket
 
   constructor() {
+    this.PORT = getEnv('PORT')
     this.app = express()
     this.server = createServer(this.app)
     this.socket = new CreateSocket(this.server)
@@ -35,10 +37,10 @@ class App {
   }
 
   public run() {
-    this.server.listen(PORT, () => {
+    this.server.listen(this.PORT, () => {
       this.socket.useMiddlewares()
       this.socket.initSocket()
-      console.log(`server listen on ${PORT}`)
+      console.log(`server listen on ${this.PORT}`)
     })
   }
 }

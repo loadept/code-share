@@ -1,5 +1,5 @@
 import { AuthPayload } from '../models/jwt'
-import { SECRET_KEY } from './environments'
+import getEnv from './environment'
 import jwt from 'jsonwebtoken'
 
 class AuthJwt {
@@ -8,7 +8,7 @@ class AuthJwt {
   // private readonly jwtExpiredIn = '1y'
 
   private constructor() {
-    this.jwtSecret = SECRET_KEY!
+    this.jwtSecret = getEnv('SECRET_KEY')
   }
 
   signToken(payload: AuthPayload) {

@@ -93,8 +93,8 @@ export const Header = () => {
               </div>
 
               <div className="space-y-2 max-h-64 overflow-y-auto">
-                {connectedUsers.map(user => (
-                  <PopupUser key={user.userId} user={user} />
+                {connectedUsers.map((user, index) => (
+                  <PopupUser key={index} user={user} />
                 ))}
               </div>
             </div>

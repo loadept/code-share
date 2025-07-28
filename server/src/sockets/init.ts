@@ -7,7 +7,7 @@ import { authorization } from '../middlewares/sockets/authorization'
 
 export default class CreateSocket {
   private _io: Server
-  private socketRoomHandlers: SocketRoomHandlers 
+  private socketRoomHandlers: SocketRoomHandlers
   private socketCodeHandlers: SocketCodeHandlers
 
   constructor(httpServer: http.Server) {

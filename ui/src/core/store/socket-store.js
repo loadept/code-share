@@ -46,7 +46,7 @@ const useSocketStore = create((set, get) => ({
         })
       })
 
-      socket.on('roomUpdates', ({ _roomId, count, users }) => {
+      socket.on('roomUpdates', ({ count, users }) => {
         set({
           countConnections: count,
           connectedUsers: users
@@ -65,7 +65,7 @@ const useSocketStore = create((set, get) => ({
 
   disconnect: () => {
     const { socket } = get()
-    
+
     if (socket) {
       socket.emit('leaveRoom')
       socket.removeAllListeners()
