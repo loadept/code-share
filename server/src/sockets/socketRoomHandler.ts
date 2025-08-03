@@ -1,11 +1,16 @@
 import { Server, Socket } from 'socket.io'
-import { UserConnected } from '../models/socket'
+import { UserConnected } from '../types/socket'
+import { RoomModel, CodeRoomModel } from '../models'
 
 export class SocketRoomHandlers {
   public connectedUsers: Map<string, UserConnected[]>
+  private roomModel: RoomModel
+  private codeModel: CodeRoomModel
 
-  constructor() {
+  constructor(roomModel: RoomModel, codeModel: CodeRoomModel) {
     this.connectedUsers = new Map<string, UserConnected[]>()
+    this.roomModel = roomModel
+    this.codeModel = codeModel
   }
 
   handleJoinRoom(io: Server, socket: Socket) {
@@ -15,12 +20,17 @@ export class SocketRoomHandlers {
     socket.join(roomId)
     console.log(`New socket connected ${socket.id} to room ${roomId}`)
 
-    const roomUsers = this.connectedUsers.get(roomId) || []
-    if (!roomUsers.some(u => u.userId === userData.userId)) {
-      this.connectedUsers.set(roomId, [...roomUsers, userData])
+    const roomUsers = this.roomModel.getUsers(roomId)
+
+    if (roomUsers.length === 0) {
+      userData.isLeader = true
+    }
+    if (!roomUsers.some(u => u.socketId === userData.socketId)) {
+      this.roomModel.setUsers(roomId, userData)
     }
 
     this.emitRoomUpdate(io, socket)
+    this.syncState(io, socket)
   }
 
   handleLeaveRoom(io: Server, socket: Socket) {
@@ -29,13 +39,8 @@ export class SocketRoomHandlers {
 
     socket.leave(roomId)
 
-    const roomUsers = this.connectedUsers.get(roomId)
-      ?.filter(u => u.userId !== userData.userId) || []
-
-    if (roomUsers.length > 0) {
-      this.connectedUsers.set(roomId, roomUsers)
-    } else {
-      this.connectedUsers.delete(roomId)
+    if (this.roomModel.deleteUser(roomId, userData.socketId).all) {
+      this.codeModel.deleteCode(roomId)
     }
 
     this.emitRoomUpdate(io, socket)
@@ -45,13 +50,8 @@ export class SocketRoomHandlers {
     const roomId = socket.data.roomId as string
     const userData = socket.data.userData as UserConnected
 
-    const roomUsers = this.connectedUsers.get(roomId)?.filter(u => u.userId !== userData.userId) || []
-
-    if (roomUsers.length > 0) {
-      this.connectedUsers.set(roomId, roomUsers)
-    } else {
-      this.connectedUsers.delete(roomId)
-      console.log('Room completely eliminated')
+    if (this.roomModel.deleteUser(roomId, userData.socketId).all) {
+      this.codeModel.deleteCode(roomId)
     }
 
     this.emitRoomUpdate(io, socket)
@@ -61,7 +61,7 @@ export class SocketRoomHandlers {
     const roomId = socket.data.roomId as string
 
     const socketsCount = io.sockets.adapter.rooms.get(roomId)?.size || 0
-    const users = this.connectedUsers.get(roomId) || []
+    const users = this.roomModel.getUsers(roomId)
     const userCount = users.length
 
     io.to(roomId).emit('roomUpdates', {
@@ -69,6 +69,15 @@ export class SocketRoomHandlers {
       users,
       count: userCount,
       sockets: socketsCount
+    })
+  }
+
+  syncState(io: Server, socket: Socket) {
+    const roomId = socket.data.roomId as string
+    const code = this.codeModel.getCode(roomId)
+
+    io.to(socket.id).emit('syncState', {
+      ...code
     })
   }
 }

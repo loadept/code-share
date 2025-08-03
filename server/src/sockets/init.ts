@@ -4,6 +4,7 @@ import { SocketRoomHandlers } from './socketRoomHandler'
 import { SocketCodeHandlers } from './socketCodeHandler'
 import { validateRoom } from '../middlewares/sockets/validateRoom'
 import { authorization } from '../middlewares/sockets/authorization'
+import { RoomModel, CodeRoomModel } from '../models'
 
 export default class CreateSocket {
   private _io: Server
@@ -18,8 +19,14 @@ export default class CreateSocket {
         origin: '*'
       }
     })
-    this.socketRoomHandlers = new SocketRoomHandlers()
-    this.socketCodeHandlers = new SocketCodeHandlers()
+
+    this.socketRoomHandlers = new SocketRoomHandlers(
+      RoomModel.instance,
+      CodeRoomModel.instance
+    )
+    this.socketCodeHandlers = new SocketCodeHandlers(
+      CodeRoomModel.instance
+    )
   }
 
   useMiddlewares() {

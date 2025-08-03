@@ -1,6 +1,6 @@
 import { ExtendedError, Socket } from 'socket.io'
 import { authJwt } from '../../config/authJwt'
-import { UserConnected } from '../../models/socket'
+import { UserConnected } from '../../types/socket'
 
 export const authorization = (socket: Socket, next: (err?: ExtendedError) => void) => {
   const { token } = socket.handshake.auth

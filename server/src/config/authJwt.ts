@@ -1,4 +1,4 @@
-import { AuthPayload } from '../models/jwt'
+import { AuthPayload } from '../types/jwt'
 import getEnv from './environment'
 import jwt from 'jsonwebtoken'
 

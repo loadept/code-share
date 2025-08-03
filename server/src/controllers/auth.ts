@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { userValidation } from '../models/user'
+import { userValidation } from '../schemas/user'
 import { generateUUID } from '../utils/uuid'
 import { authJwt } from '../config/authJwt'
 
