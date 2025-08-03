@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "vite",
-    "build": "API_URL=/ vite build",
+    "build": "vite build --outDir ../server/dist/public",
     "preview": "vite preview"
   },
   "dependencies": {

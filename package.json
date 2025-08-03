@@ -1,21 +1,23 @@
 {
   "name": "code-share",
   "version": "1.0.0",
-  "description": "CodeShare, the collaborative code editor",
+  "description": "CodeShare - Collaborative real-time code editor with Socket.IO",
   "private": true,
-  "workspaces": [
-    "server",
-    "ui"
-  ],
+  "type": "module",
   "scripts": {
     "dev": "pnpm run --parallel dev",
     "build": "pnpm run --recursive build",
+    "start": "pnpm --filter ./server start",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
+    "collaborative",
+    "code-editor",
+    "realtime",
     "express",
     "preact",
-    "socket.io"
+    "socket.io",
+    "monaco-editor"
   ],
   "author": "loadept",
   "license": "MIT",
