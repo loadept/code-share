@@ -1,9 +1,5 @@
 import { z } from 'zod'
-
-export interface User {
-  userId: string
-  username: string
-}
+import { User } from '../types/user'
 
 const UserSchema = z.object({
   username: z.string('username field is required')
