@@ -4,9 +4,9 @@
   "main": "src/app.ts",
   "private": true,
   "scripts": {
-    "start": "node dist/app.js",
+    "start": "node -r dotenv/config dist/app.js dotenv_config_path=../.env",
     "build": "tsc",
-    "dev": "nodemon src/app.ts",
+    "dev": "nodemon -r dotenv/config src/app.ts dotenv_config_path=../.env",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {

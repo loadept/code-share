@@ -15,9 +15,6 @@ export default class CreateSocket {
     this._io = new Server(httpServer, {
       transports: ['websocket'],
       connectionStateRecovery: {},
-      cors: {
-        origin: '*'
-      }
     })
 
     this.socketRoomHandlers = new SocketRoomHandlers(
@@ -36,7 +33,7 @@ export default class CreateSocket {
 
   initSocket() {
     this._io.on('connection', (socket) => {
-      // Peer connections socket
+      // Room connections socket
       socket.on('joinRoom', () => this.socketRoomHandlers.handleJoinRoom(this._io, socket))
       socket.on('leaveRoom', () => this.socketRoomHandlers.handleLeaveRoom(this._io, socket))
 

@@ -9,7 +9,7 @@ export default defineConfig({
     tailwindcss()
   ],
   define: {
-    API_URL: JSON.stringify(process.env.API_URL),
+    API_URL: JSON.stringify(process.env.API_URL || ''),
   },
   resolve: {
     alias: {

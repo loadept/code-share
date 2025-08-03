@@ -27,9 +27,11 @@ class App {
   private setupMiddleware() {
     this.app.disable('x-powered-by')
     this.app.use(json())
-    this.app.use(cors())
-    // Static files middleware
     this.app.use(express.static(join(__dirname, 'public')))
+
+    if (getEnv('NODE_ENV') === 'development') {
+      this.app.use(cors())
+    }
   }
 
   private setupRoutes() {
@@ -41,6 +43,7 @@ class App {
       this.socket.useMiddlewares()
       this.socket.initSocket()
       console.log(`server listen on ${this.PORT}`)
+      console.log(`You are in ${getEnv('NODE_ENV')} mode`)
     })
   }
 }
