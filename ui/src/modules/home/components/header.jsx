@@ -76,7 +76,7 @@ export const Header = () => {
         {isConnected && showUsersList && (
           <div
             className="absolute right-0 top-full mt-2 w-96 bg-[#252526] border border-[#3e3e42]
-              rounded-lg shadow-xl z-50 animate-showing"
+              rounded-lg shadow-xl z-40 animate-showing"
           >
             <div className="p-4">
               <div className="flex items-center justify-between mb-3">

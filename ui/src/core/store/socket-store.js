@@ -10,7 +10,7 @@ const useSocketStore = create((set, get) => ({
 
   SOCKET_SERVER_URL: API_URL,
 
-  connect: (roomId, authToken) => {
+  connect: (roomId, authToken, isLeader) => {
     const { socket: currentSocket, disconnect } = get()
 
     if (currentSocket) {
@@ -24,7 +24,7 @@ const useSocketStore = create((set, get) => ({
 
       const socket = io(SOCKET_SERVER_URL, {
         transports: ['websocket'],
-        query: { roomId },
+        query: { roomId, isLeader },
         auth: { token: authToken },
         reconnectionDelay: 1000,
       })

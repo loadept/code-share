@@ -18,6 +18,29 @@ export const MainEditor = () => {
   }, [])
 
   useEffect(() => {
+    if (!socketConnected) return
+
+    const handleSyncState = ({ code: initialCode, lastUpdate }) => {
+      isRemoteChange.current = true
+
+      setCode(initialCode)
+
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          isRemoteChange.current = false
+        })
+      })
+      console.log(`Synchronized state. Last update ${lastUpdate}`)
+    }
+
+    on('syncState', handleSyncState)
+
+    return () => {
+      off('syncState', handleSyncState)
+    }
+  }, [socketConnected])
+
+  useEffect(() => {
     if (!socket) return
 
     const handleCodeUpdate = ({ code: remoteCode }) => {
