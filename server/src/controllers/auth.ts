@@ -7,7 +7,8 @@ export default class AuthController {
   auth(req: Request, res: Response) {
     const result = userValidation(req.body || {})
     if (result.error) {
-      return res.status(400).json({ detail: JSON.parse(result.error.message) })
+      const errMessage =  result.error.issues.flatMap(err => err.message)
+      return res.status(400).json({ error: 'Validation error', details: errMessage })
     }
 
     const uuid = generateUUID()
