@@ -18,7 +18,7 @@ export const ConnectModal = ({ handleConnect, setShowConnectionModal, url }) => 
   return (
     <div
       className="fixed inset-0 flex items-center justify-center z-50"
-      style={{ backgroundColor: "rgba(0, 0, 0, 0.8)" }}
+      style={{ backgroundColor: 'rgba(0, 0, 0, 0.8)' }}
     >
       <div
         className="w-full max-w-md rounded-lg p-6 bg-[#252526] border border-[#3e3e42]"
@@ -46,7 +46,7 @@ export const ConnectModal = ({ handleConnect, setShowConnectionModal, url }) => 
             onClick={copyToClipboard}
             className="px-3 py-2 rounded-lg transition-colors text-white hover:bg-[#e55a2b] outline-none cursor-pointer"
             style={{
-              backgroundColor: !isCopied ? "#ff6b35" : "#4ec95d"
+              backgroundColor: !isCopied ? '#ff6b35' : '#4ec95d'
             }}
           >
             {!isCopied ?

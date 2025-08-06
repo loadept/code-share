@@ -32,4 +32,4 @@ const UserMinus = ({ className }) => {
   )
 }
 
-export default UserMinus;
+export default UserMinus

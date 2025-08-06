@@ -109,7 +109,7 @@ export const MainEditor = () => {
         language="plaintext"
         theme="vs-dark"
         options={{
-          fontFamily: "firacode",
+          fontFamily: 'firacode',
           fontLigatures: true,
           minimap: { enabled: false },
           bracketPairColorization: { enabled: true },
@@ -118,8 +118,8 @@ export const MainEditor = () => {
           insertSpaces: true,
           padding: { top: 20, bottom: 20 },
           automaticLayout: true,
-          cursorBlinking: "expand",
-          cursorSmoothCaretAnimation: "on",
+          cursorBlinking: 'expand',
+          cursorSmoothCaretAnimation: 'on',
           smoothScrolling: true,
           quickSuggestions: false,
           parameterHints: { enabled: false },

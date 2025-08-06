@@ -30,7 +30,7 @@ const useSocketStore = create((set, get) => ({
       })
 
       socket.on('connect', () => {
-        console.log(`socket connected ${socket.id}`);
+        console.log(`socket connected ${socket.id}`)
 
         set({ isConnected: true, isConnecting: false })
         socket.emit('joinRoom')

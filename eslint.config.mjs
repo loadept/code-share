@@ -1,10 +1,21 @@
 import eslint from '@eslint/js'
 import tseslint from 'typescript-eslint'
+import react from 'eslint-plugin-react'
+import globals from 'globals'
 
 export default tseslint.config(
   eslint.configs.recommended,
   tseslint.configs.strict,
   tseslint.configs.stylistic,
+  {
+    files: ['**/*.{js,jsx}'],
+    plugins: {
+      react
+    },
+    languageOptions: {
+      globals: globals.browser
+    }
+  },
   {
     rules: {
       // Espaciado alrededor de operadores (variable = valor)
@@ -32,5 +43,12 @@ export default tseslint.config(
       // Tipo de final de línea
       'linebreak-style': ['error', 'unix']
     }
+  },
+  {
+    ignores: [
+      '**/node_modules/**',
+      '**/dist/**',
+      '**/build/**',
+    ]
   }
 )

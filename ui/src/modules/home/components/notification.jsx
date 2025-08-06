@@ -1,4 +1,4 @@
-import { Exit } from "../../icons"
+import { Exit } from '../../icons'
 
 export const Notification = ({ notifications, removeNotification }) => {
   return (
