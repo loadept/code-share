@@ -7,6 +7,7 @@ import useConnectionStore from '../core/store/session-store'
 import useSocketStore from '../core/store/socket-store'
 import { UserMinus, UserPlus } from '../modules/icons'
 import { Notification } from '../modules/home/components/notification'
+import useCodeStateStore from '../core/store/code-store'
 
 const Home = () => {
   const { isAuthenticated, isLoading, authData } = useAuthStore()
@@ -16,6 +17,7 @@ const Home = () => {
     disconnect: disconnectSocket,
     countConnections: countConnectionsSocket,
   } = useSocketStore()
+  const { checkCodeState } = useCodeStateStore()
   const [notifications, setNotifications] = useState([])
   const initialCounts = useRef(countConnectionsSocket)
 
@@ -27,6 +29,7 @@ const Home = () => {
 
   useEffect(() => {
     checkConnection()
+    checkCodeState()
   }, [])
 
   useEffect(() => {

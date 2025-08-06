@@ -1,6 +1,7 @@
 import { Editor } from '@monaco-editor/react'
 import { useCallback, useEffect, useRef, useState } from 'preact/hooks'
 import useSocketStore from '../../../core/store/socket-store'
+import useCodeStateStore from '../../../core/store/code-store'
 
 export const MainEditor = () => {
   const [code, setCode] = useState('')
@@ -8,6 +9,7 @@ export const MainEditor = () => {
   const debounceTimer = useRef(null)
   const editorRef = useRef(null)
   const { socket, on, emit, off, isConnected: socketConnected } = useSocketStore()
+  const { codeState: codeStorageState, saveState: saveCodeState, isCodeLoaded } = useCodeStateStore()
 
   useEffect(() => {
     return () => {
@@ -18,7 +20,13 @@ export const MainEditor = () => {
   }, [])
 
   useEffect(() => {
-    if (!socketConnected) return
+    if (!socketConnected) {
+      if (isCodeLoaded) {
+        setCode(codeStorageState.code)
+        console.log('Code loaded from local storage')
+      }
+      return
+    }
 
     const handleSyncState = ({ code: initialCode, lastUpdate }) => {
       isRemoteChange.current = true
@@ -64,7 +72,10 @@ export const MainEditor = () => {
 
   const debounceEmit = useCallback((codeValue) => {
     if (isRemoteChange.current) return
-    if (!socketConnected) return
+    if (!socketConnected) {
+      saveCodeState(codeValue)
+      return
+    }
 
     if (debounceTimer.current) {
       clearTimeout(debounceTimer.current)
@@ -81,6 +92,9 @@ export const MainEditor = () => {
   }
 
   const handleEditorDidMount = (editor, monaco) => {
+    const model = editor.getModel()
+    model.setEOL(monaco.editor.EndOfLineSequence.LF)
+
     editorRef.current = editor
   }
 
