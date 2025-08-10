@@ -8,7 +8,7 @@
     "dev": "cross-env NODE_ENV=development pnpm run --parallel dev",
     "build": "cross-env NODE_ENV=production pnpm run --recursive build",
     "start": "cross-env NODE_ENV=production pnpm --filter ./server start",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test:server": "cross-env SECRET_KEY=12345asdt12 pnpm run --filter ./server test"
   },
   "keywords": [
     "collaborative",

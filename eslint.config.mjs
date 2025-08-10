@@ -41,7 +41,9 @@ export default tseslint.config(
       // Comillas simples o dobles consistentes
       '@/quotes': ['error', 'single'],
       // Tipo de final de línea
-      'linebreak-style': ['error', 'unix']
+      'linebreak-style': ['error', 'unix'],
+      // Salta de linea al final del archivo
+      'eol-last': 'error',
     }
   },
   {

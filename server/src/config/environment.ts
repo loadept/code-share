@@ -1,6 +1,11 @@
+import { exit } from 'node:process'
+
 const getEnv = (env: string) => {
   const value = process.env[env]
-  if (!value) throw new Error(`Missing environment variable: ${env}`)
+  if (!value) {
+    console.error(`Missing environment variable: ${env}`)
+    exit(1)
+  }
   return value
 }
 

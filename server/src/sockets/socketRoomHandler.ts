@@ -74,7 +74,7 @@ export class SocketRoomHandlers {
 
   syncState(io: Server, socket: Socket) {
     const roomId = socket.data.roomId as string
-    const code = this.codeModel.getCode(roomId)
+    const code = this.codeModel.getCode(roomId) || { code: null, lastUpdate: null }
 
     io.to(socket.id).emit('syncState', code)
   }

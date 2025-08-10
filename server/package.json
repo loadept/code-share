@@ -7,7 +7,7 @@
     "start": "node -r dotenv/config dist/app.js dotenv_config_path=../.env",
     "build": "tsc",
     "dev": "nodemon -r dotenv/config src/app.ts dotenv_config_path=../.env",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest run"
   },
   "dependencies": {
     "cors": "^2.8.5",
@@ -23,6 +23,7 @@
     "@types/jsonwebtoken": "^9.0.10",
     "nodemon": "^3.1.10",
     "ts-node": "^10.9.2",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.4"
   }
 }

@@ -9,7 +9,7 @@ class CodeRoomModel {
   }
 
   public getCode(roomId: string) {
-    return this.code.get(roomId) || { code: '', lastUpdate: '' }
+    return this.code.get(roomId) || undefined
   }
 
   public setCode(roomId: string, code: Code) {
